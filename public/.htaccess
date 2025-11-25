@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Pass Authorization header through to PHP
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
+</IfModule>
+
+# Alternative: Use mod_authz_core if available
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>

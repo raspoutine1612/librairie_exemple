@@ -1,0 +1,66 @@
+# Configuration de sécurité Symfony
+# Cette file configure l'authentification, les utilisateurs et les autorisations
+# https://symfony.com/doc/current/security.html
+
+security:
+    # Configuration du hachage des mots de passe
+    # 'auto' choisit automatiquement l'algorithme en fonction de la version de PHP
+    # Dans notre cas: bcrypt sur Windows
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    
+    # Fournisseurs d'utilisateurs
+    # Définit comment charger les utilisateurs
+    providers:
+        app_user_provider:
+            entity:
+                # Classe entity à utiliser pour les utilisateurs
+                class: App\Entity\User
+                # Propriété unique de l'User pour charger les utilisateurs
+                # Ici on utilise 'uuid' au lieu de 'id'
+                property: uuid
+    
+    # Firewalls = entrées de sécurité
+    # Chaque firewall protège une ou plusieurs routes de l'application
+    firewalls:
+        # Firewall de développement
+        # Désactive la sécurité pour les routes de dev (profiler, assets, etc)
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        
+        # Firewall principal pour l'API
+        main:
+            # stateless: true = pas de sessions, chaque requête doit s'authentifier
+            # Parfait pour les APIs RESTful basées sur JWT
+            stateless: true
+            
+            # lazy: true = ne charge l'authenticateur que si nécessaire
+            lazy: true
+            
+            # Utilise le fournisseur app_user_provider pour charger les utilisateurs
+            provider: app_user_provider
+            
+            # Notre authenticateur personnalisé qui gère les tokens JWT
+            custom_authenticator: App\Security\TokenAuthenticator
+            
+            # Point d'entrée: ce qui est appelé si accès refusé à une ressource protégée
+            # TokenAuthenticator implémente AuthenticationEntryPointInterface
+            entry_point: App\Security\TokenAuthenticator
+
+    # Règles de contrôle d'accès
+    # Vérifiez les @[IsGranted] dans les contrôleurs plutôt que de configurer ici
+    # Les annotations @[IsGranted('ROLE_USER')] sont plus lisibles et plus maintenant
+    access_control:
+        # Les règles définies ici sont optionnelles car on utilise les annotations
+
+# Configuration pour l'environnement de test
+# Réduit la complexité du hachage pour accélérer les tests
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4 # Minimum pour bcrypt en test
+                time_cost: 3 # Minimum pour argon en test
+                memory_cost: 10 # Minimum pour argon en test

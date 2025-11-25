@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration PHPUnit pour tester l'application Symfony -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.4/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         failOnRisky="false"
+         failOnWarning="true">
+    
+    <testsuites>
+        <!-- Suite de tests unitaires -->
+        <testsuite name="Unit Tests">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        
+        <!-- Suite de tests fonctionnels/intégration -->
+        <testsuite name="Functional Tests">
+            <directory>tests/Functional</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Coverage: Quelle couverture générer -->
+    <coverage pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="false">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>src/Kernel.php</directory>
+            <directory>src/Command</directory>
+        </exclude>
+    </coverage>
+
+    <!-- PHP: Configuration PHP pour les tests -->
+    <php>
+        <!-- Environnement de test -->
+        <ini name="error_reporting" value="-1"/>
+        <ini name="display_errors" value="0"/>
+        <ini name="display_startup_errors" value="0"/>
+        
+        <!-- Symfony: Utiliser l'environnement test -->
+        <env name="KERNEL_CLASS" value="App\Kernel"/>
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_DEBUG" value="0"/>
+        <env name="APP_SECRET" value="test-secret-key-very-secure-1234567890"/>
+        
+        <!-- API: URI par défaut pour les tests fonctionnels -->
+        <env name="DEFAULT_URI" value="http://localhost"/>
+    </php>
+</phpunit>

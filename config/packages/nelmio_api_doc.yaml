@@ -1,0 +1,30 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Symfony JWT API
+            description: REST API with JWT authentication for managing users and books
+            version: 1.0.0
+            contact:
+                name: API Support
+                email: support@example.com
+        
+        servers:
+            - url: '%env(DEFAULT_URI)%'
+              description: Development server
+            - url: https://api.example.com
+              description: Production server
+        
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+                    description: 'Enter your JWT token'
+        
+        security:
+            - Bearer: []
+    
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

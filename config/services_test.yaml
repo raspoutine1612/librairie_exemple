@@ -1,0 +1,7 @@
+# Override logger in test environment to silence debug output
+services:
+    logger:
+        class: Psr\Log\NullLogger
+        public: false
+
+    Psr\Log\LoggerInterface: '@logger'
