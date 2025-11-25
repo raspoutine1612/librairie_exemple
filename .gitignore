@@ -1,0 +1,54 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/\.env.test.local
+/\.env.backup
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+/phpunit.result.cache
+###< phpunit/phpunit ###
+
+# === Additional ignores for project hygiene ===
+# Cache & logs (already covered by /var but keep explicit patterns if var content changes)
+var/cache/*
+var/log/*
+
+# Coverage & reports
+coverage/
+var/coverage/
+
+# IDE / editor
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Front-end (if added later)
+node_modules/
+dist/
+public/build/
+
+# Temp & logs
+*.log
+*.tmp
+
+# Security / keys
+*.pem
+*.key
+*.crt
+
+# Migration temp files (keep real migrations)
+migrations/tmp_*.php
+
